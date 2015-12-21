@@ -1,20 +1,20 @@
 Package: CancerCellLineModelling
 Type: Package
 Title: Modelling Drug Response In Cancer Cell Lines
-Version: 0.1.0
+Version: 0.1.1
 Date: 2015-12-15
 Author@R: person("Phil", "Chapman", , "phil.chapman@cruk.manchester.ac.uk", c("aut", "cre"))
 Maintainer@R: person("Phil", "Chapman", , "phil.chapman@cruk.manchester.ac.uk")
 Description: Builds on CancerCellLines package to provide functionality for modelling drug response against genetic features in cancer cell line screening data
 License: Artistic-2.0
 LazyData: TRUE
-Depends: 
+Depends:
     R (>= 3.0.1),
-    CancerCellLines,
-    caret
-Suggests: 
+    CancerCellLines
+Suggests:
     RColorBrewer,
     knitr,
-    rmarkdown
-VignetteBuilder: 
+    rmarkdown,
+    caret
+VignetteBuilder:
     knitr
