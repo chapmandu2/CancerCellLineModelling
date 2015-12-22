@@ -37,8 +37,26 @@ my_df <-  makeRespVsGeneticDataFrame(con,
                                      drug_df=NULL)
 mutcounts_df <- univariateAnalysisMutCounts(my_df)
 res_df <- univariateAnalysis(my_df)
-res_df <- univariateAnalysisFDR(res_df, 5)
+res_df <- univariateAnalysisFDR(res_df, 2)
+univariateVolcanoPlot(res_df)
 
+#a bigger example
+library(piano)
+genelist2 <- unlist(loadGSC('/Users/pchapman/BigData/GSEA/c5.bp.v5.0.symbols.gmt')$gsc['DNA_REPAIR'])
+genelist2 <- c(genelist, genelist2)
+my_df2 <- makeRespVsGeneticDataFrame(con, 
+                             genelist2, 
+                             cell_lines$CCLE_name, 
+                             drug = drugs, 
+                             data_types=c('cosmicclp', 'hybcap'), 
+                             drug_df=NULL)
+
+res_df2 <- univariateAnalysis(my_df2)
+res_df2 <- univariateAnalysisFDR(res_df2, 2)
+univariateVolcanoPlot(res_df2)
+pp <- univariateVolcanoPlot(res_df2, use_fdr = TRUE)
+pp
+pp + ggplot2::scale_x_log10(limits=c(0.01, 100))
 
 ```
 
