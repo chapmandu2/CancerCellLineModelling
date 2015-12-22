@@ -35,6 +35,7 @@ my_df <-  makeRespVsGeneticDataFrame(con,
                                      drug = drugs, 
                                      data_types=c('cosmicclp', 'hybcap'), 
                                      drug_df=NULL)
+mutcounts_df <- univariateAnalysisMutCounts(my_df)
 res_df <- univariateAnalysis(my_df)
 res_df <- univariateAnalysisFDR(res_df, 5)
 
