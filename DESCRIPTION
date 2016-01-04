@@ -1,7 +1,7 @@
 Package: CancerCellLineModelling
 Type: Package
 Title: Modelling Drug Response In Cancer Cell Lines
-Version: 0.2.0
+Version: 0.2.1
 Date: 2016-01-04
 Author@R: person("Phil", "Chapman", , "phil.chapman@cruk.manchester.ac.uk",
     c("aut", "cre"))

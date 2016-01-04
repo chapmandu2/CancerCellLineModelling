@@ -61,7 +61,7 @@ pp + ggplot2::scale_x_log10(limits=c(0.01, 100))
 #shiny app
 con <- setupSQLite('~/BigData/CellLineData/CancerCellLines.db')
 shinyUnivariateAnalysisApp(con)
-shinyUnivariateAnalysisApp(con, gsc=loadGSC('/Users/pchapman/BigData/GSEA/c5.bp.v5.0.symbols.gmt'))
+shinyUnivariateAnalysisApp(con, gsc=loadGSC('/Users/pchapman/BigData/GSEA/msigdb.v5.0.symbols.gmt'))
 
 ```
 

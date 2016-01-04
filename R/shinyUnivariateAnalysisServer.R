@@ -46,7 +46,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
           return(NULL)
       }
 
-      selectInput("geneset", label = h3("Select a gene set"),
+      selectInput("geneset", label = h5("Select a gene set"),
                   choices = names(gsc$gsc),
                   multiple = TRUE,
                   selectize = TRUE)
@@ -73,7 +73,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
   proc_results <- reactive({
 
       res_df <- univariateAnalysis(proc_data())
-      res_df <- univariateAnalysisFDR(res_df, 2)
+      res_df <- univariateAnalysisFDR(res_df, mut_count_th = input$mut_count)
       return(res_df)
 
   })
@@ -91,7 +91,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
 
     tissues <- tissues.df$tissue
 
-    selectInput("tissue", label = h3("Select a tissue type"),
+    selectInput("tissue", label = h5("Select a tissue type"),
                 choices = tissues,
                 selected = tissues,
                 multiple = TRUE,
@@ -108,7 +108,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
 
     resps <- resp.df$resp_id
 
-    selectInput("respid", label = h3("Select a response variable"),
+    selectInput("respid", label = h5("Select a response variable"),
                 choices = resps,
                 selected = resps[1])
 
@@ -147,7 +147,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
   })
 
   output$plot1 <- renderPlot({
-      univariateVolcanoPlot(proc_results(), use_fdr = TRUE)
+      univariateVolcanoPlot(proc_results(), pval_th = 10^(0-input$pval_th), effect_th = input$effect_th, use_fdr = input$fdr_option)
   })
 
 

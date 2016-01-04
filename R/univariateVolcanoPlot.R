@@ -13,7 +13,9 @@ univariateVolcanoPlot <- function (ua_df, pval_th=NULL, effect_th=2, use_fdr=FAL
     effect_th <- log10(effect_th)
 
     #suitable pval_th
-    pval_th <- ifelse(use_fdr, 0.2, 0.05)
+    if(!is.numeric(pval_th)) {
+        pval_th <- ifelse(use_fdr, 0.2, 0.05)
+    }
 
     #define required pvalue
     if(use_fdr) {
