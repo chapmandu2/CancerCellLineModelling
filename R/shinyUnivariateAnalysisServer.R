@@ -124,10 +124,12 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
         mainPanel(tableOutput('df'),
                   downloadButton('downloadData', 'Download Data'),
                   downloadButton('downloadResults', 'Download Results'))
-    } else {
+    } else if (input$output_option == 3) {
       mainPanel(tableOutput('res_df'),
                 downloadButton('downloadData', 'Download Data'),
                 downloadButton('downloadResults', 'Download Results'))
+    } else {
+        mainPanel(tableOutput('mut_df'))
     }
 
 
@@ -146,6 +148,10 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
       proc_results()
   })
 
+  output$mut_df <- renderTable({
+      univariateAnalysisMutCounts(proc_data())
+  })
+
   output$plot1 <- renderPlot({
       univariateVolcanoPlot(proc_results(), pval_th = 10^(0-input$pval_th), effect_th = input$effect_th, use_fdr = input$fdr_option)
   })
@@ -154,14 +160,14 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
   output$downloadData <- downloadHandler(
     filename = "univariateAnalaysis_inputdata.txt",
     content = function(file) {
-      write.table (proc_data(), file = file, sep = '\t', row.names = FALSE, col.names=TRUE)
+      write.table (proc_data(), file = file, sep = '\t', row.names = FALSE, col.names=TRUE, na='')
     }
   )
 
   output$downloadResults <- downloadHandler(
       filename = "univariateAnalysis_results.txt",
       content = function(file) {
-          write.table (proc_results(), file = file, sep = '\t', row.names = FALSE, col.names=TRUE)
+          write.table (proc_results(), file = file, sep = '\t', row.names = FALSE, col.names=TRUE, na='')
       }
   )
 

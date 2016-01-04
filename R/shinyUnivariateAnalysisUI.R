@@ -20,7 +20,7 @@ shinyUnivariateAnalysisUI <- function () {
         sliderInput('effect_th', label = 'Effect size threshold (fold change)', min=1, max=20, value=2, step=0.1),
         sliderInput('pval_th', label = 'P-value threshold (negative log10 scale)', min=0, max=5, value=1, step=0.1),
         selectInput("output_option", label = h5("Generate"),
-                    choices = list('Volcano Plot' = 1, 'Input Data'=2, 'Results'=3),
+                    choices = list('Volcano Plot' = 1, 'Input Data'=2, 'Results'=3, 'Mutation Counts'=4),
                     selected = 1),
         h5("Plot Options:"),
         selectInput("tissue_option", label = "Select tissue categorisation",

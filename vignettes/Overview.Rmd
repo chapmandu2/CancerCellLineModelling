@@ -60,8 +60,11 @@ pp + ggplot2::scale_x_log10(limits=c(0.01, 100))
 
 #shiny app
 con <- setupSQLite('~/BigData/CellLineData/CancerCellLines.db')
-shinyUnivariateAnalysisApp(con)
-shinyUnivariateAnalysisApp(con, gsc=loadGSC('/Users/pchapman/BigData/GSEA/msigdb.v5.0.symbols.gmt'))
+msigdb <- loadGSC('/Users/pchapman/BigData/GSEA/msigdb.v5.0.symbols.gmt')
+shinyUnivariateAnalysisApp(con)  #basic example with manually entered gene names
+shinyUnivariateAnalysisApp(con, gsc=msigdb) #bigger example with all gene sets
+shinyUnivariateAnalysisApp(con, drug_df = dietlein_data, gsc=msigdb) #custom example with all gene sets
+
 
 ```
 
