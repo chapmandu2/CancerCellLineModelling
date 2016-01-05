@@ -3,7 +3,7 @@
 \name{multivariateAnalysisElasticNet}
 \alias{multivariateAnalysisElasticNet}
 \title{multivariateAnalysisElasticNet
-Do a univariate analysis}
+Do a multivariate elastic net analysis}
 \usage{
 multivariateAnalysisElasticNet(tall_df, resp_var = NULL, lambda = NULL,
   alpha = NULL)
@@ -16,6 +16,6 @@ data frame
 }
 \description{
 multivariateAnalysisElasticNet
-Do a univariate analysis
+Do a multivariate elastic net analysis
 }
 

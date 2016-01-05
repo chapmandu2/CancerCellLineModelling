@@ -1,5 +1,5 @@
 #' multivariateAnalysisElasticNet
-#' Do a univariate analysis
+#' Do a multivariate elastic net analysis
 #' @param df Output data from from CancerCellLines::makeRespVsGeneticDataFrame
 #'
 #' @return data frame

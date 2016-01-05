@@ -79,6 +79,10 @@ glmnet_res <- multivariateAnalysisElasticNet(my_df3, 'AZD6244')
 multivariateAnalysisVarImp(glmnet_res)
 multivariateAnalysisVarImpPlot(glmnet_res, 20)
 
+gbmfit_res <- multivariateAnalysisGBM(my_df3, 'AZD6244')
+multivariateAnalysisVarImp(gbmfit_res)
+multivariateAnalysisVarImpPlot(gbmfit_res, 20)
+
 ```
 
 

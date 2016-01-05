@@ -27,7 +27,7 @@ multivariateAnalysisVarImpPlot <- function (caret_res, n=20) {
         scale_color_gradient2(low='blue', mid='white', high='red') +
         theme(axis.text.x = element_text(size=rel(1), angle=330, hjust=0, vjust=1),
                    axis.text.y = element_text(size=rel(1))) +
-        ggtitle(sprintf('Top %s Features for %s', nrow(plot_data), attr(glmnet_res, 'resp_var')))
+        ggtitle(sprintf('Top %s Features for %s', nrow(plot_data), attr(caret_res, 'resp_var')))
     return(p)
 
 }
