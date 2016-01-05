@@ -8,8 +8,6 @@
 
 multivariateAnalysisElasticNet <- function (tall_df, resp_var=NULL, lambda=NULL, alpha=NULL) {
 
-    #require(caret);require(foreach);require(parallel);require(doParallel)
-
     caret_data <- multivariateAnalysisPrep(tall_df, resp_var)
 
     #allow for custom values of lambda and alpha

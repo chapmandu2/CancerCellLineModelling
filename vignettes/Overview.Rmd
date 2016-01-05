@@ -76,7 +76,8 @@ my_df3 <- makeTallDataFrame(con,
 
 test_df <- multivariateAnalysisPrep(my_df3, 'AZD6244')
 glmnet_res <- multivariateAnalysisElasticNet(my_df3, 'AZD6244')
-
+multivariateAnalysisVarImp(glmnet_res)
+multivariateAnalysisVarImpPlot(glmnet_res, 20)
 
 ```
 

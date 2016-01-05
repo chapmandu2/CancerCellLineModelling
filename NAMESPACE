@@ -2,6 +2,8 @@
 
 export(multivariateAnalysisElasticNet)
 export(multivariateAnalysisPrep)
+export(multivariateAnalysisVarImp)
+export(multivariateAnalysisVarImpPlot)
 export(shinyUnivariateAnalysisApp)
 export(univariateAnalysis)
 export(univariateAnalysisFDR)
