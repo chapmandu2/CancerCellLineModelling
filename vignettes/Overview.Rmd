@@ -20,7 +20,7 @@ library(dplyr)
 Intro - aim of package.  See CancerCellLines package on github
 
 ## Univariate analysis
-BUilds from the `makeRespVsGeneticDataFrame` function output.  Simple to use:
+Builds from the `makeRespVsGeneticDataFrame` function output.  Simple to use:
 
 ```{r}
 

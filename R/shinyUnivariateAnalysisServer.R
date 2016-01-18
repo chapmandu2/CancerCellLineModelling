@@ -1,3 +1,17 @@
+#' shinyUnivariateAnalysisServer
+#'
+#' Create a shiny server for the univariate analysis shiny app
+#'
+#' @param input shiny input
+#' @param output shiny output
+#' @param con SQLite connection object
+#' @param drug_df drug data frame
+#' @param gsc piano gsc object
+#'
+#' @return a shiny server
+#' @export
+#'
+#' @importFrom DT renderDataTable dataTableOutput
 shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=NULL) {
 
   #get the cell lines for the given tissues
@@ -119,17 +133,23 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
     if (input$output_option == 1) {
       mainPanel(plotOutput("plot1", width=input$plot_width, height=input$plot_height),
                 downloadButton('downloadData', 'Download Data'),
+                downloadButton('downloadMutCounts', 'Download Mutation Counts'),
                 downloadButton('downloadResults', 'Download Results'))
     } else if (input$output_option == 2) {
-        mainPanel(tableOutput('df'),
+        mainPanel(DT::dataTableOutput('df'),
                   downloadButton('downloadData', 'Download Data'),
+                  downloadButton('downloadMutCounts', 'Download Mutation Counts'),
                   downloadButton('downloadResults', 'Download Results'))
     } else if (input$output_option == 3) {
-      mainPanel(tableOutput('res_df'),
+      mainPanel(DT::dataTableOutput('res_df'),
                 downloadButton('downloadData', 'Download Data'),
+                downloadButton('downloadMutCounts', 'Download Mutation Counts'),
                 downloadButton('downloadResults', 'Download Results'))
     } else {
-        mainPanel(tableOutput('mut_df'))
+        mainPanel(DT::dataTableOutput('mut_df'),
+                  downloadButton('downloadData', 'Download Data'),
+                  downloadButton('downloadMutCounts', 'Download Mutation Counts'),
+                  downloadButton('downloadResults', 'Download Results'))
     }
 
 
@@ -139,18 +159,18 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
     sprintf("Tissue is length: %s", length(input$tissue))
   })
 
-  output$df <- renderTable({
+  output$df <- DT::renderDataTable({
     proc_data()
     #get_shiny_cell_lines(con, input$tissue) %>% as.data.frame
-  })
+  }, filter='top')
 
-  output$res_df <- renderTable({
+  output$res_df <- DT::renderDataTable({
       proc_results()
-  })
+  }, filter='top')
 
-  output$mut_df <- renderTable({
+  output$mut_df <- DT::renderDataTable({
       univariateAnalysisMutCounts(proc_data())
-  })
+  }, filter='top')
 
   output$plot1 <- renderPlot({
       univariateVolcanoPlot(proc_results(), pval_th = 10^(0-input$pval_th), effect_th = input$effect_th, use_fdr = input$fdr_option)
@@ -168,6 +188,13 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
       filename = "univariateAnalysis_results.txt",
       content = function(file) {
           write.table (proc_results(), file = file, sep = '\t', row.names = FALSE, col.names=TRUE, na='')
+      }
+  )
+
+  output$downloadMutCounts <- downloadHandler(
+      filename = "univariateAnalysis_mut_counts.txt",
+      content = function(file) {
+          write.table (univariateAnalysisMutCounts(proc_data()), file = file, sep = '\t', row.names = FALSE, col.names=TRUE, na='')
       }
   )
 
