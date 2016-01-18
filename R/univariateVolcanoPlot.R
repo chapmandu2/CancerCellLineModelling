@@ -7,7 +7,7 @@
 #' @export
 #' @import dplyr ggplot2 scales ggrepel
 
-univariateVolcanoPlot <- function (ua_df, pval_th=NULL, effect_th=2, use_fdr=FALSE) {
+univariateVolcanoPlot <- function (ua_df, pval_th=NULL, effect_th=2, use_fdr=FALSE, repel_option=FALSE) {
 
     #put effect_th on log scale
     effect_th <- log10(effect_th)
@@ -45,11 +45,22 @@ univariateVolcanoPlot <- function (ua_df, pval_th=NULL, effect_th=2, use_fdr=FAL
     }
 
     #do the volcano plot
-    volcano_plot <- ggplot ( volcano_data , aes (x=effect_size_unlog, y=pval_selected, fill=class, size=log10(gt1))) + geom_point(aes(shape=feature_type)) +
-        geom_text_repel(data = volcano_data_geomtext, aes(label=ID, colour=class),
-                        size=5, force = 5, max.iter = 1e4,
-                        box.padding = unit(0.35, "lines"),
-                        point.padding = unit(0.3, "lines")) +
+    volcano_plot <- ggplot ( volcano_data , aes (x=effect_size_unlog, y=pval_selected, fill=class, size=log10(gt1))) + geom_point(aes(shape=feature_type))
+
+    #make sure we don't try to do repelling labels with too many points...
+    if (nrow(volcano_data_geomtext) < 100 & repel_option) {
+        volcano_plot <- volcano_plot +
+            geom_text_repel(data = volcano_data_geomtext, aes(label=ID, colour=class),
+                            size=5, force = 5, max.iter = 1e4,
+                            box.padding = unit(0.35, "lines"),
+                            point.padding = unit(0.3, "lines"))
+    } else {
+        volcano_plot <- volcano_plot +
+            geom_text(data = volcano_data_geomtext, aes(label=ID, colour=class), size=4, hjust=-0.3, vjust=-0.4, angle=0)
+    }
+
+    #finish off the plot
+    volcano_plot <- volcano_plot +
         geom_vline(xintercept = c(10^(-effect_th),10^effect_th) , color='blue', alpha=0.5, linetype='dotted') +
         geom_hline(yintercept = pval_th, color='blue', alpha=0.5, linetype='dotted') +
         scale_y_continuous(trans=reverselog_trans(10)) + scale_fill_manual (values=c('lightgreen', 'orange', 'lightgray')) +

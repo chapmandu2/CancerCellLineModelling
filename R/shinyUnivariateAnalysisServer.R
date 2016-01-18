@@ -49,7 +49,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
           return(NULL)
       }
 
-      gsc$gsc[[input$geneset]]
+      unique(unlist(unname(gsc$gsc[input$geneset])))
 
   })
 
@@ -173,7 +173,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
   }, filter='top')
 
   output$plot1 <- renderPlot({
-      univariateVolcanoPlot(proc_results(), pval_th = 10^(0-input$pval_th), effect_th = input$effect_th, use_fdr = input$fdr_option)
+      univariateVolcanoPlot(proc_results(), pval_th = 10^(0-input$pval_th), effect_th = input$effect_th, use_fdr = input$fdr_option, repel_option=input$repel_option)
   })
 
 

@@ -6,7 +6,7 @@
 Makes a volcano plot from the output of the univariateAnalysis function}
 \usage{
 univariateVolcanoPlot(ua_df, pval_th = NULL, effect_th = 2,
-  use_fdr = FALSE)
+  use_fdr = FALSE, repel_option = FALSE)
 }
 \arguments{
 \item{pval_th}{p-value threshold (unlogged)}
