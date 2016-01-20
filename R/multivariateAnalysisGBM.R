@@ -29,8 +29,10 @@ multivariateAnalysisGBM <- function (tall_df, resp_var=NULL, n.trees=NULL, inter
     )
     stopCluster(cl)
 
-    #store the compound name for future reference
+    #store the compound name for future reference and change the model label
     attr(gbmFit, 'resp_var') <- resp_var
+    caret_res$modelInfo$label <- 'gbm'
+
 
     return(gbmFit)
 

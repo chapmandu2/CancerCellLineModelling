@@ -5,10 +5,15 @@
 \title{multivariateAnalysisVarImp
 Extract variable importance parameters from a caret::train object}
 \usage{
-multivariateAnalysisVarImp(caret_res)
+multivariateAnalysisVarImp(caret_res, glmnet_caret = FALSE,
+  varImp_scale = FALSE)
 }
 \arguments{
 \item{caret_res}{Train object as produced by multivariateAnalysisElasticNet for example}
+
+\item{glmnet_caret}{Boolean to determine whether to use the caret varImp function for glmnet objects (default FALSE)}
+
+\item{varImp_scale}{Boolean to determine whether caret::varImp scale parameter is set to FALSE (default) or TRUE}
 }
 \value{
 data frame
