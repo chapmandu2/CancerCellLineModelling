@@ -54,7 +54,7 @@ my_df2 <- makeRespVsGeneticDataFrame(con,
 res_df2 <- univariateAnalysis(my_df2)
 res_df2 <- univariateAnalysisFDR(res_df2, 2)
 univariateVolcanoPlot(res_df2)
-pp <- univariateVolcanoPlot(res_df2, use_fdr = TRUE)
+pp <- univariateVolcanoPlot(res_df2, use_fdr = FALSE)
 pp
 pp + ggplot2::scale_x_log10(limits=c(0.01, 100))
 

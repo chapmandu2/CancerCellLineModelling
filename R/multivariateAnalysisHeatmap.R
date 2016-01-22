@@ -11,24 +11,31 @@
 #'
 multivariateAnalysisHeatmap <- function(caret_res_list, n=10) {
 
+    #apply VarImp function on all caret train objects in the list and combine output into data frame
     res_df <- lapply(caret_res_list, function(x) multivariateAnalysisVarImp(caret_res=x, glmnet_caret = TRUE, varImp_scale = TRUE)) %>%
         dplyr::bind_rows() %>%
         dplyr::mutate(col_id=paste(model_type, resp_var, sep='_'))
 
+    #pivot the data using tidyr - feature id by endpoint
     res_ct <- res_df  %>%
         dplyr::select(feature_name, Imp, col_id) %>%
         tidyr::spread(col_id, Imp)
 
+    #turn data frame into matrix
     res_mat <- res_ct %>%
         dplyr::select(-feature_name) %>%
         as.matrix()
     rownames(res_mat) <- res_ct$feature_name
 
+    #determine the top features for each analysis and combine
     res_topfeatures <- res_df %>% dplyr::filter(idx <= n) %>% dplyr::select(feature_name) %>% dplyr::distinct()
+
+    #generate a data frame of column information for plotting
     column_info <- res_df %>% dplyr::select(col_id, model_type, resp_var) %>% dplyr::distinct() %>% as.data.frame()
     rownames(column_info) <- column_info$col_id
     column_info <- column_info[,-1]
 
+    #generate the heatmap
     pheatmap(res_mat[res_topfeatures$feature_name,],
              cluster_rows = TRUE, cluster_cols = FALSE,
              annotation_col = column_info,

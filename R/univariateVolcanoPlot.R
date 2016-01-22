@@ -27,13 +27,11 @@ univariateVolcanoPlot <- function (ua_df, pval_th=NULL, effect_th=2, use_fdr=FAL
     #define which genetic features exceed the thresholds set
     volcano_data <- volcano_data %>%
         dplyr::filter(!is.na(FDR)) %>%
-        dplyr::mutate(class = ifelse(estimate < -effect_th & pval_selected < pval_th, 'neg',
+        dplyr::mutate(effect_class = ifelse(estimate < -effect_th & pval_selected < pval_th, 'neg',
                               ifelse(estimate > effect_th & pval_selected < pval_th, 'pos', 'same')))
 
-
-
     #make a seperate data frame for the labels
-    volcano_data_geomtext <- volcano_data %>% filter(class != 'same')
+    volcano_data_geomtext <- volcano_data %>% filter(effect_class != 'same')
 
     #define a local function to plot the y axis as we want it
     reverselog_trans <- function(base = exp(1)) {
@@ -45,27 +43,30 @@ univariateVolcanoPlot <- function (ua_df, pval_th=NULL, effect_th=2, use_fdr=FAL
     }
 
     #do the volcano plot
-    volcano_plot <- ggplot ( volcano_data , aes (x=effect_size_unlog, y=pval_selected, fill=class, size=log10(gt1))) + geom_point(aes(shape=feature_type))
+    volcano_plot <- ggplot ( volcano_data , aes (x=effect_size_unlog, y=pval_selected, fill=effect_class, size=log10(gt1))) + geom_point(aes(shape=feature_type))
 
     #make sure we don't try to do repelling labels with too many points...
     if (nrow(volcano_data_geomtext) < 100 & repel_option) {
         volcano_plot <- volcano_plot +
-            geom_text_repel(data = volcano_data_geomtext, aes(label=ID, colour=class),
+            geom_text_repel(data = volcano_data_geomtext, aes(label=assayed_id, colour=effect_class),
                             size=5, force = 5, max.iter = 1e4,
                             box.padding = unit(0.35, "lines"),
                             point.padding = unit(0.3, "lines"))
     } else {
         volcano_plot <- volcano_plot +
-            geom_text(data = volcano_data_geomtext, aes(label=ID, colour=class), size=4, hjust=-0.3, vjust=-0.4, angle=0)
+            geom_text(data = volcano_data_geomtext, aes(label=assayed_id, colour=effect_class), size=4, hjust=-0.3, vjust=-0.4, angle=0)
     }
 
     #finish off the plot
     volcano_plot <- volcano_plot +
         geom_vline(xintercept = c(10^(-effect_th),10^effect_th) , color='blue', alpha=0.5, linetype='dotted') +
         geom_hline(yintercept = pval_th, color='blue', alpha=0.5, linetype='dotted') +
-        scale_y_continuous(trans=reverselog_trans(10)) + scale_fill_manual (values=c('lightgreen', 'orange', 'lightgray')) +
-        scale_colour_manual (values = c('darkgreen', 'red', 'blue')) + scale_shape_manual(values = c(21,22,23), breaks = c("hybcap", "cosmic", "custom")) +
-        scale_size_continuous(range=c(3,9)) + scale_x_log10(limits=c(min(volcano_data$effect_size_unlog,0.1),max(10,volcano_data$effect_size_unlog))) +
+        scale_y_continuous(trans=reverselog_trans(10)) +
+        scale_fill_manual (values=c('lightgreen', 'orange', 'lightgray'), limits=c('neg', 'pos', 'same')) +
+        scale_colour_manual (values = c('darkgreen', 'red', 'blue'), limits=c('neg', 'pos', 'same')) +
+        scale_shape_manual(values = c(21,22,23), limits = c("hybcap", "cosmicclp", "custom")) +
+        scale_size_continuous(range=c(3,9)) +
+        scale_x_log10(limits=c(min(volcano_data$effect_size_unlog,0.1),max(10,volcano_data$effect_size_unlog))) +
         xlab("IC50 Ratio") + ylab(ifelse(use_fdr, 'FDR', 'P value')) +
         facet_wrap( ~ resp_id) +
         theme_bw()  + theme(legend.position="none", axis.text = element_text(size=rel(1.5)), axis.title = element_text(size=rel(2)))

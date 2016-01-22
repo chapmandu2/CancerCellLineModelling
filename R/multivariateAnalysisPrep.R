@@ -22,7 +22,7 @@ multivariateAnalysisPrep <- function (tall_df, resp_var=NULL) {
     outdata <- tall_df %>%
         dplyr::filter(!(Type == 'resp' & ID != resp_var)) %>%
         makeWideFromTallDataFrame() %>%
-        dplyr::select(-CCLE_name)
+        dplyr::select(-unified_id)
 
     #get rid of near zero variance variables
     nzv <- nearZeroVar(outdata)
