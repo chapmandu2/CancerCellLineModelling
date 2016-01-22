@@ -69,7 +69,10 @@ univariateVolcanoPlot <- function (ua_df, pval_th=NULL, effect_th=2, use_fdr=FAL
         scale_x_log10(limits=c(min(volcano_data$effect_size_unlog,0.1),max(10,volcano_data$effect_size_unlog))) +
         xlab("IC50 Ratio") + ylab(ifelse(use_fdr, 'FDR', 'P value')) +
         facet_wrap( ~ resp_id) +
-        theme_bw()  + theme(legend.position="none", axis.text = element_text(size=rel(1.5)), axis.title = element_text(size=rel(2)))
+        theme_bw()  + theme(legend.position="none",
+                            axis.text = element_text(size=rel(1.5)),
+                            axis.title = element_text(size=rel(2)),
+                            strip.text = element_text(size=rel(1.7)))
 
     return(volcano_plot)
 

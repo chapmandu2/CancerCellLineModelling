@@ -58,7 +58,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
           return(NULL)
       }
 
-      selectInput("geneset", label = h5("Select a gene set"),
+      selectInput("geneset", label = p("Select a gene set"),
                   choices = names(gsc$gsc),
                   multiple = TRUE,
                   selectize = TRUE)
@@ -103,7 +103,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
 
     tissues <- tissues.df$tissue
 
-    selectInput("tissue", label = h5("Select a tissue type"),
+    selectInput("tissue", label = p("Select a tissue type"),
                 choices = tissues,
                 selected = tissues,
                 multiple = TRUE,
@@ -120,7 +120,7 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
 
     resps <- resp.df$resp_id
 
-    selectInput("respid", label = h5("Select a response variable"),
+    selectInput("respid", label = p("Select a response variable"),
                 choices = resps,
                 selected = resps[1])
 
@@ -130,21 +130,25 @@ shinyUnivariateAnalysisServer <- function(input, output, con, drug_df=NULL, gsc=
 
     if (input$output_option == 1) {
       mainPanel(plotOutput("plot1", width=input$plot_width, height=input$plot_height),
+                hr(),
                 downloadButton('downloadData', 'Download Data'),
                 downloadButton('downloadMutCounts', 'Download Mutation Counts'),
                 downloadButton('downloadResults', 'Download Results'))
     } else if (input$output_option == 2) {
         mainPanel(DT::dataTableOutput('df'),
+                  hr(),
                   downloadButton('downloadData', 'Download Data'),
                   downloadButton('downloadMutCounts', 'Download Mutation Counts'),
                   downloadButton('downloadResults', 'Download Results'))
     } else if (input$output_option == 3) {
       mainPanel(DT::dataTableOutput('res_df'),
+                hr(),
                 downloadButton('downloadData', 'Download Data'),
                 downloadButton('downloadMutCounts', 'Download Mutation Counts'),
                 downloadButton('downloadResults', 'Download Results'))
     } else {
         mainPanel(DT::dataTableOutput('mut_df'),
+                  hr(),
                   downloadButton('downloadData', 'Download Data'),
                   downloadButton('downloadMutCounts', 'Download Mutation Counts'),
                   downloadButton('downloadResults', 'Download Results'))

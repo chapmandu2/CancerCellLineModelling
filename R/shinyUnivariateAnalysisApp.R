@@ -12,7 +12,7 @@
 shinyUnivariateAnalysisApp <- function(con, drug_df=NULL, gsc=NULL) {
 
   shiny::shinyApp(
-    ui = shinyUnivariateAnalysisUI(),
+    ui = shinyUnivariateAnalysisGridUI(),
     server = function(input, output) {
         shinyUnivariateAnalysisServer(input, output, con, drug_df, gsc)
     }
